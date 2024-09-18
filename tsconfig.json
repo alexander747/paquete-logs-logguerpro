@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "ES2015",
+        "module": "CommonJS",
+        "declaration": true,
+        "outDir": "dist",
+        "strict": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true, // Habilita los decoradores
+        "emitDecoratorMetadata": true, // Opcional, emite metadata para los decoradores
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
