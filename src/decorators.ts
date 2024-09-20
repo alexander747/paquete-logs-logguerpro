@@ -27,8 +27,8 @@ export function seguimiento(target: any, propertyKey: string, descriptor: Proper
                 const result = await originalMethod.apply(this, args);
                 logger.info(`Fin de ${propertyKey}`);
                 return result;
-            } catch (error) {
-                logger.error(`Error en ${propertyKey}: ${error}`);
+            } catch (error: any) {
+                logger.error(`Fin Error en ${propertyKey}: ${error} ${error.message}`);
                 throw error;
             }
         });
