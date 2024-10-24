@@ -47,8 +47,8 @@ export function detail() {
             const store = new Map(parentStore); // Clonamos el store
 
             // Establecer 'isDetailed' solo si no está ya presente en el contexto
-            if (!store.has('isDetailed')) {
-                store.set('isDetailed', "si"); // Usamos "si" como valor
+            if (!store.has('showDetailsLogs')) {
+                store.set('showDetailsLogs', true); // Usamos "si" como valor
                 // console.log(`[DEBUG] Estableciendo 'isDetailed' en "si" para la función decorada: ${propertyKey}`);
             }
 

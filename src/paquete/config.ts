@@ -1,12 +1,15 @@
 // config.ts
 export interface SeguimientoConfig {
     headerName: string;
-    isDetailed: string; // Ahora "si" o "no"
+    showDetailsLogs: boolean,
+    captureHeaderInitialWith: string
+
 }
 
 export const defaultConfig: SeguimientoConfig = {
     headerName: 'uuid-transaction',
-    isDetailed: "no", // Valor por defecto
+    showDetailsLogs: false,
+    captureHeaderInitialWith: ''
 };
 
 let config = { ...defaultConfig };

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { MockService } from "./mock.service";
-import { detail, seguimiento } from "../../decorators";
+import { detail, seguimiento } from "../../paquete/decorators";
 
 
 // @seguimiento
@@ -16,12 +16,12 @@ import { detail, seguimiento } from "../../decorators";
 // }
 
 export class MockClass {
-    @seguimiento
-    @detail()
+    // @seguimiento
+    // @detail()
     async mockPeticion(req: Request, res: Response, Next: NextFunction) {
         const mock = new MockService();
         const data = await mock.mockPeticionService();
-        // console.warn("data obtenida ===>", data);
+        console.warn("data obtenida ===>", data);
         return res.json({
             data,
             status: 200

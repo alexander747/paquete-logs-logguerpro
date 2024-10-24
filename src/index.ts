@@ -1,17 +1,15 @@
 // index.ts
 import express from 'express';
-import { seguimientoMiddleware } from './middleware';
-import { errorHandler } from './errorHandler';
+import { seguimientoMiddleware } from './paquete/middleware';
+import { errorHandler } from './paquete/errorHandler';
 import routes from './routes';
-import { configureLogs } from './config.logs';
-import { setConfig } from './config';
+import { configureLogs } from './paquete/config.logs';
 
 const app = express();
 
 
 // configuracion de logs 
 // Cambiar la configuración global de logs detallados
-setConfig({ isDetailed: "no" });
 configureLogs();
 
 // Usar el middleware de seguimiento al inicio

@@ -1,7 +1,7 @@
-import { detail, seguimiento } from "../../decorators";
+import { detail, seguimiento } from "../../paquete/decorators";
 
 export class MockService {
-    @seguimiento
+    // @seguimiento
     // @detail()
     async mockPeticionService() {
         let datos: any = {

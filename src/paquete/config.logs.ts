@@ -1,10 +1,23 @@
 // config.logs.ts
 import logger from './logger';
 import { getAsyncStorage } from './storage';
-import { getConfig } from './config';
+import { getConfig, setConfig } from './config';
+
+
+interface configuracionInicial {
+    showDetailsLogs?: boolean,
+    captureHeaderInitialWith?: ''
+}
 
 // Función para configurar los logs
-export function configureLogs() {
+export function configureLogs(configuration: configuracionInicial = {}) {
+
+    /**CONFIGURAMOS LOS VALORES POR DEFECTO */
+    setConfig({
+        showDetailsLogs: configuration.showDetailsLogs ?? false,
+        captureHeaderInitialWith: configuration.captureHeaderInitialWith ?? ''
+    });
+
     // Guardar referencias a las funciones originales
     const originalConsoleLog = console.log;
     const originalConsoleWarn = console.warn;
@@ -12,7 +25,7 @@ export function configureLogs() {
 
     // Obtener la configuración global
     const config = getConfig();
-    const globalDetailEnabled = config.isDetailed === "si"; // Usamos "si" como valor global
+    const globalDetailEnabled = config.showDetailsLogs === true; // Usamos "si" como valor global
 
     // Sobrescribir console.log
     console.log = (...args: any[]) => {
@@ -23,9 +36,9 @@ export function configureLogs() {
             // Si no está activado globalmente, verificamos AsyncLocalStorage
             const asyncLocalStorage = getAsyncStorage();
             const store = asyncLocalStorage.getStore();
-            const isDetailed = store && store.get('isDetailed') === "si";
+            const showDetailsLogs = store && store.get('showDetailsLogs') === true;
 
-            if (isDetailed) {
+            if (showDetailsLogs) {
                 logger.info(args.map(formatArg).join(' '));
             } else {
                 // Usar la función original si no está activado
@@ -42,9 +55,9 @@ export function configureLogs() {
         } else {
             const asyncLocalStorage = getAsyncStorage();
             const store = asyncLocalStorage.getStore();
-            const isDetailed = store && store.get('isDetailed') === "si";
+            const showDetailsLogs = store && store.get('showDetailsLogs') === true;
 
-            if (isDetailed) {
+            if (showDetailsLogs) {
                 logger.warn(args.map(formatArg).join(' '));
             } else {
                 originalConsoleWarn(...args);
@@ -60,9 +73,9 @@ export function configureLogs() {
         } else {
             const asyncLocalStorage = getAsyncStorage();
             const store = asyncLocalStorage.getStore();
-            const isDetailed = store && store.get('isDetailed') === "si";
+            const showDetailsLogs = store && store.get('showDetailsLogs') === true;
 
-            if (isDetailed) {
+            if (showDetailsLogs) {
                 logger.error(args.map(formatArg).join(' '));
             } else {
                 originalConsoleError(...args);
