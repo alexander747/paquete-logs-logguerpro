@@ -1,14 +1,16 @@
 import { detail, seguimiento } from "../../paquete/decorators";
 
 export class MockService {
-    // @seguimiento
-    // @detail()
+    @seguimiento
+    @detail()
     async mockPeticionService() {
         let datos: any = {
             a: 1,
             b: 2
         }
-        console.log(datos);
+        console.error(datos);
+        console.error("Error en mockPeticionService");
+
         return datos.b;
     }
 }

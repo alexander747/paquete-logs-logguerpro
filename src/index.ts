@@ -10,10 +10,13 @@ const app = express();
 
 // configuracion de logs 
 // Cambiar la configuración global de logs detallados
-configureLogs();
+configureLogs({
+    captureHeaderInitialWith: 'x-mesos',
+    separateLogswith: '||'
+});
 
 // Usar el middleware de seguimiento al inicio
-app.use(seguimientoMiddleware);
+// app.use(seguimientoMiddleware);
 
 // Tus rutas y middlewares aquí...
 app.use(routes);

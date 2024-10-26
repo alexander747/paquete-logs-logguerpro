@@ -6,7 +6,8 @@ import { getConfig, setConfig } from './config';
 
 interface configuracionInicial {
     showDetailsLogs?: boolean,
-    captureHeaderInitialWith?: ''
+    captureHeaderInitialWith?: string,
+    separateLogswith?: string
 }
 
 // Función para configurar los logs
@@ -15,7 +16,8 @@ export function configureLogs(configuration: configuracionInicial = {}) {
     /**CONFIGURAMOS LOS VALORES POR DEFECTO */
     setConfig({
         showDetailsLogs: configuration.showDetailsLogs ?? false,
-        captureHeaderInitialWith: configuration.captureHeaderInitialWith ?? ''
+        captureHeaderInitialWith: configuration.captureHeaderInitialWith ?? '',
+        separateLogswith: configuration.separateLogswith ?? ''
     });
 
     // Guardar referencias a las funciones originales

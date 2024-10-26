@@ -1,23 +1,31 @@
 // logger.ts
 import winston from 'winston';
 import { getAsyncStorage } from './storage';
+import { getConfig } from './config';
 
 const { combine, timestamp, printf } = winston.format;
 
 const customFormat = printf(({ level, message, timestamp }) => {
     const asyncLocalStorage = getAsyncStorage();
     const store = asyncLocalStorage.getStore();
-    const transactionId = store ? store.get('uuid-transaction') : 'No-UUID';
+    const { captureHeaderInitialWith } = getConfig();
+    const { separateLogswith } = getConfig()
+
+    const transactionId = store ? store.get('id-transaction') : 'No-UUID';
 
     // Extraer todos los valores adicionales del contexto (headers)
     const additionalHeaders = store
         ? Array.from(store.entries())
-            .filter(([key]) => key.startsWith('follow-')) // Filtrar solo los encabezados que comienzan con 'follow-'
+            .filter(([key]) => key.startsWith(captureHeaderInitialWith)) // Filtrar solo los encabezados que comienzan con 'follow-'
             .map(([key, value]) => `${key}: ${value}`)
             .join(', ')
         : '';
     // Formatear el log con timestamp, UUID y los valores adicionales
-    return `${timestamp} [${transactionId}] ${additionalHeaders ? `| ${additionalHeaders}` : ''} ${level}: ${message}`;
+    if (separateLogswith) {
+        return `${timestamp} ${separateLogswith} [${transactionId}] ${additionalHeaders ? `${separateLogswith} ${additionalHeaders}` : ''} ${separateLogswith} ${level}: ${message}`;
+    } else {
+        return `${timestamp} [${transactionId}] ${additionalHeaders ? `${additionalHeaders}` : ''} ${level}: ${message}`;
+    }
 });
 
 const logger = winston.createLogger({

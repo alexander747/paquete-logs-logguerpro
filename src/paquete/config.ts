@@ -3,13 +3,14 @@ export interface SeguimientoConfig {
     headerName: string;
     showDetailsLogs: boolean,
     captureHeaderInitialWith: string
-
+    separateLogswith: string
 }
 
 export const defaultConfig: SeguimientoConfig = {
-    headerName: 'uuid-transaction',
+    headerName: 'id-transaction',
     showDetailsLogs: false,
-    captureHeaderInitialWith: ''
+    captureHeaderInitialWith: '',
+    separateLogswith: ''
 };
 
 let config = { ...defaultConfig };

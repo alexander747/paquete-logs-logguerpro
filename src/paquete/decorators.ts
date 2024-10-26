@@ -9,15 +9,15 @@ export function seguimiento(target: any, propertyKey: string, descriptor: Proper
         const asyncLocalStorage = getAsyncStorage();
         let store = asyncLocalStorage.getStore() || new Map();
 
-        // Establecer 'uuid-transaction' solo si no existe
-        if (!store.has('uuid-transaction')) {
+        // Establecer 'id-transaction' solo si no existe
+        if (!store.has('id-transaction')) {
             const transactionId = 'No-UUID'; // O usa tu lógica de generación de UUID aquí
-            store.set('uuid-transaction', transactionId);
+            store.set('id-transaction', transactionId);
         }
 
         // Ejecutar la función dentro del contexto actualizado sin modificar 'isDetailed'
         return asyncLocalStorage.run(store, async () => {
-            const transactionId = store.get('uuid-transaction') || 'No-UUID';
+            const transactionId = store.get('id-transaction') || 'No-UUID';
 
             // logger.info(`Inicio de ${propertyKey} con uuid ${transactionId}`);
             logger.info(`Inicio de ${propertyKey}`);

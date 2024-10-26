@@ -5,7 +5,8 @@ import { getConfig } from './config';
 import { getAsyncStorage } from './storage';
 
 export const seguimientoMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const { headerName } = getConfig();
+    const { headerName, captureHeaderInitialWith } = getConfig();
+
     const asyncLocalStorage = getAsyncStorage();
     const store = new Map<string, any>();
 
@@ -17,19 +18,21 @@ export const seguimientoMiddleware = (req: Request, res: Response, next: NextFun
     }
 
     // Agregar el transactionId al store
-    store.set('uuid-transaction', transactionId);
+    store.set('id-transaction', transactionId);
 
     // Agregar el header al response
     res.setHeader(headerName, transactionId);
 
-    // Buscar todos los headers que comiencen por 'follow-' y agregarlos al store y a la respuesta
-    const followHeaders = Object.keys(req.headers).filter(header => header.startsWith('follow-'));
+    // si captureHeaderInitialWith esta con algun valor, Busca todos los headers que comiencen por  captureHeaderInitialWith y agregarlos al store y a la respuesta
+    if (captureHeaderInitialWith) {
+        const followHeaders = Object.keys(req.headers).filter(header => header.startsWith(captureHeaderInitialWith));
+        followHeaders.forEach(header => {
+            const headerValue = req.headers[header] as string;
+            store.set(header, headerValue);  // Guardamos el header en el contexto
+            res.setHeader(header, headerValue);  // También lo agregamos a la respuesta
+        });
 
-    followHeaders.forEach(header => {
-        const headerValue = req.headers[header] as string;
-        store.set(header, headerValue);  // Guardamos el header en el contexto
-        res.setHeader(header, headerValue);  // También lo agregamos a la respuesta
-    });
+    }
 
     // Ejecutar el siguiente middleware dentro del contexto de asyncLocalStorage
     asyncLocalStorage.run(store, () => {
