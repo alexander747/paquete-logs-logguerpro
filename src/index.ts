@@ -16,7 +16,7 @@ configureLogs({
 });
 
 // Usar el middleware de seguimiento al inicio
-// app.use(seguimientoMiddleware);
+app.use(seguimientoMiddleware);
 
 // Tus rutas y middlewares aquí...
 app.use(routes);

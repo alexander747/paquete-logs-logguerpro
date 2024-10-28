@@ -1,6 +1,7 @@
 // decorators.ts
 import { getAsyncStorage } from './storage';
 import logger from './logger';
+import { v4 as uuidv4 } from 'uuid';
 
 export function seguimiento(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
@@ -11,13 +12,13 @@ export function seguimiento(target: any, propertyKey: string, descriptor: Proper
 
         // Establecer 'id-transaction' solo si no existe
         if (!store.has('id-transaction')) {
-            const transactionId = 'No-UUID'; // O usa tu lógica de generación de UUID aquí
+            const transactionId = uuidv4(); // O usa tu lógica de generación de UUID aquí
             store.set('id-transaction', transactionId);
         }
 
         // Ejecutar la función dentro del contexto actualizado sin modificar 'isDetailed'
         return asyncLocalStorage.run(store, async () => {
-            const transactionId = store.get('id-transaction') || 'No-UUID';
+            const transactionId = store.get('id-transaction') || '';
 
             // logger.info(`Inicio de ${propertyKey} con uuid ${transactionId}`);
             logger.info(`Inicio de ${propertyKey}`);
